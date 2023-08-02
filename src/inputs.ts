@@ -46,7 +46,7 @@ export default function getInput(
 	options ??= {};
 	options.type ??= string;
 	options.optional ??= false;
-	const value = process.env["INPUT_" + name.trim().toUpperCase()];
+	const value = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`];
 	if (value === undefined && options.optional !== true) {
 		throw new Error(`Missing required input '${name}'`);
 	}
