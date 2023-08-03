@@ -26,7 +26,10 @@ export async function jobSummary(
 	}
 	await writeFile(
 		process.env[key],
-		typeof content === "string" ? content : String.raw(content, ...args),
+		(typeof content === "string"
+			? content
+			: String.raw(content, ...args)
+		).trim(),
 	);
 }
 
