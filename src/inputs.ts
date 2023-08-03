@@ -1,35 +1,32 @@
-export default function getInput(name: string): string;
-export default function getInput(
+export function getInput(name: string): string;
+export function getInput(
 	name: string,
 	options: { optional: true },
 ): string | undefined;
-export default function getInput(
-	name: string,
-	options: { optional: false },
-): string;
-export default function getInput<Optional extends boolean>(
+export function getInput(name: string, options: { optional: false }): string;
+export function getInput<Optional extends boolean>(
 	name: string,
 	options: { optional?: Optional },
 ): Optional extends true ? string | undefined : string;
-export default function getInput<Output>(
+export function getInput<Output>(
 	name: string,
 	options: { type: (value: string) => Output },
 ): Output;
-export default function getInput<Output>(
+export function getInput<Output>(
 	name: string,
 	options: {
 		optional: true;
 		type: (value: string) => Output;
 	},
 ): Output | undefined;
-export default function getInput<Output>(
+export function getInput<Output>(
 	name: string,
 	options: {
 		optional: false;
 		type: (value: string) => Output;
 	},
 ): Output;
-export default function getInput<Optional extends boolean, Output>(
+export function getInput<Optional extends boolean, Output>(
 	name: string,
 	options: {
 		optional?: Optional | undefined;
@@ -37,7 +34,7 @@ export default function getInput<Optional extends boolean, Output>(
 	},
 ): Optional extends true ? undefined | Output : Output;
 
-export default function getInput(
+export function getInput(
 	name: string,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	options?: { optional?: boolean; type?: (value: string) => any },
@@ -58,6 +55,8 @@ export default function getInput(
 		throw new Error(`Unable to parse input '${name}'`);
 	}
 }
+
+export default getInput;
 
 // types
 export function string(value: string): string {

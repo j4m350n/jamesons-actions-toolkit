@@ -29,3 +29,5 @@ export async function jobSummary(
 		typeof content === "string" ? content : String.raw(content, ...args),
 	);
 }
+
+export default jobSummary;
