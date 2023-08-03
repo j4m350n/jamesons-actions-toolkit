@@ -1,4 +1,5 @@
 import { writeFile } from "fs/promises";
+import trimIndent from "./util/trimIndent";
 
 /**
  * Set the markdown job/step summary.
@@ -26,10 +27,9 @@ export async function jobSummary(
 	}
 	await writeFile(
 		process.env[key],
-		(typeof content === "string"
-			? content
-			: String.raw(content, ...args)
-		).trim(),
+		trimIndent(
+			typeof content === "string" ? content : String.raw(content, ...args),
+		),
 	);
 }
 
