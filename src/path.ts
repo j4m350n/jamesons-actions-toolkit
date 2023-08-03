@@ -8,6 +8,10 @@ export async function addPath(...dirs: string[]) {
 		throw new Error(`Missing environment variable '${key}'`);
 	}
 	const str = dirs.join(EOL) + EOL;
-	process.env[key] += str;
 	await appendFile(process.env[key], str);
+	process.env["PATH"] = (
+		process.env["PATH"] ? process.env["PATH"].split(":") || [] : []
+	)
+		.concat(dirs)
+		.join(":");
 }
