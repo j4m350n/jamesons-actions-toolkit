@@ -7,7 +7,7 @@ import {
 	spawn,
 } from "node:child_process";
 import Callable from "./util/Callable";
-import { WritableStream } from "node:stream/web";
+import { WritableStream, ReadableStream } from "node:stream/web";
 
 export interface Commandline {
 	name: string;
@@ -148,6 +148,7 @@ export class AwaitableReadableStringStream
 		shell: Cash,
 		proc: ChildProcess,
 		streams: ChildProcess["stdout"][],
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		...superArgs: any[]
 	) {
 		super(...superArgs);
@@ -214,6 +215,7 @@ function createReadableStreamOfNodeStream(
 							controller.close();
 						}
 					};
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					const errorListener = (error: any) => (
 						cleanup(), controller.error(error)
 					);

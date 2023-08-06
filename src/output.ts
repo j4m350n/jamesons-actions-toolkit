@@ -19,7 +19,6 @@ function output(
 				depth: Infinity,
 				maxArrayLength: Infinity,
 				maxStringLength: Infinity,
-				numericSeparator: true,
 			},
 			format,
 			...args,
