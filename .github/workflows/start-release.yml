@@ -41,7 +41,7 @@ jobs:
       previous_version: ${{ steps.version.outputs.previous_version }}
       previous_version_ref: ${{ steps.version.outputs.previous_version_ref }}
     steps:
-      - uses: oss-actions/auto-semver@v0
+      - uses: oss-actions/auto-semver@v0.1.11
         id: version
         with:
           token: ${{ github.token }}
