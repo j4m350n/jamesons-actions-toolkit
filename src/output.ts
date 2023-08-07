@@ -22,7 +22,7 @@ function output(
 			},
 			format,
 			...args,
-		)}`,
+		)}\n`,
 	);
 }
 
