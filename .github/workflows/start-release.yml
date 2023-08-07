@@ -20,14 +20,14 @@ permissions:
   actions: read
   security-events: write
 jobs:
-  # qa:
-  #   name: Quality Assurance
-  #   permissions:
-  #     contents: read
-  #     actions: read
-  #     security-events: write
-  #   uses: ./.github/workflows/quality-assurance.yml
-  #   if: github.ref == 'refs/heads/main'
+  qa:
+    name: Quality Assurance
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    uses: ./.github/workflows/quality-assurance.yml
+    if: github.ref == 'refs/heads/main'
   versioning:
     name: Versioning
     runs-on: ubuntu-22.04
@@ -41,20 +41,18 @@ jobs:
       previous_version: ${{ steps.version.outputs.previous_version }}
       previous_version_ref: ${{ steps.version.outputs.previous_version_ref }}
     steps:
-       # - uses: oss-actions/auto-semver@v0
-       - uses: oss-actions/auto-semver@v0.1.11
-         id: version
-         with:
-           token: ${{ github.token }}
-           repository: ${{ github.repository }}
-           type: ${{ inputs.type }}
+      - uses: oss-actions/auto-semver@v0
+        id: version
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          type: ${{ inputs.type }}
   release:
     name: Release
     runs-on: ubuntu-22.04
     permissions:
       contents: write
-    # needs: [qa, versioning]
-    needs: [versioning]
+    needs: [qa, versioning]
     if: github.ref != needs.versioning.outputs.previous_version_ref
     steps:
       - uses: actions/checkout@v3

@@ -1,8 +1,10 @@
 import { appendFile, readFile, writeFile } from "node:fs/promises";
 import indexOf from "./util/indexOf";
 import { randomUUID } from "node:crypto";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 
-const EOK = /(=|<<)/;
+const EOK = /(=|<<)/g;
 
 export function parseProperties(data: string): Record<string, string> {
 	const properties: Record<string, string> = {};
@@ -94,7 +96,12 @@ export async function appendPropertiesToFile(
 	path: string,
 	properties: Record<string, string>,
 ) {
-	await appendFile(path, stringifyProperties(properties));
+	if (!existsSync(path)) {
+		mkdirSync(dirname(path), { recursive: true });
+		writeFileSync(path, "");
+	}
+	const content = stringifyProperties(properties);
+	await appendFile(path, content);
 }
 
 export async function appendPropertiesToEnvFile(
