@@ -1,3 +1,5 @@
+import { debug } from "./output";
+
 export function getInput<Output>(
 	name: string,
 	options: { type: (value: string) => Output },
@@ -47,6 +49,8 @@ export function getInput(
 	options.type ??= string;
 	options.optional ??= false;
 	const value = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`];
+	debug("input %o = %o", name, value);
+	debug("options = %o", options);
 	if (
 		value === undefined &&
 		(options.optional !== true || options.defaultValue !== undefined)
