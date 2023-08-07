@@ -1,7 +1,7 @@
 {
   "name": "jamesons-actions-toolkit",
   "description": "A collection of tools for writing github actions.",
-  "version": "UNVERSIONED",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

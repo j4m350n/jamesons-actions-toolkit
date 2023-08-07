@@ -23,14 +23,14 @@ export function getInput<Output, Optional extends boolean>(
 		type: (value: string) => Output;
 	},
 ): Optional extends true ? undefined | Output : Output;
-export function getInput<Output, Optional extends boolean>(
+export function getInput<Output>(
 	name: string,
 	options: {
-		optional: Optional;
+		optional: true;
 		type: (value: string) => Output;
-		default: Output;
+		defaultValue: Output;
 	},
-): Optional extends true ? undefined | Output : Output;
+): Output;
 
 export function getInput(
 	name: string,
@@ -39,7 +39,7 @@ export function getInput(
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		type?: (value: string) => any;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		default?: any;
+		defaultValue?: any;
 	},
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any {
@@ -49,10 +49,10 @@ export function getInput(
 	const value = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`];
 	if (
 		value === undefined &&
-		(options.optional !== true || options.default !== undefined)
+		(options.optional !== true || options.defaultValue !== undefined)
 	) {
-		if (options.default !== undefined) {
-			return options.default;
+		if (options.defaultValue !== undefined) {
+			return options.defaultValue;
 		}
 		throw new Error(`Missing required input '${name}'`);
 	}
