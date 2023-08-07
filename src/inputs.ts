@@ -48,7 +48,8 @@ export function getInput(
 	options ??= {};
 	options.type ??= string;
 	options.optional ??= false;
-	const value = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`];
+	const value =
+		process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || undefined;
 	debug("input %o = %o", name, value);
 	debug("options = %o", options);
 	if (
