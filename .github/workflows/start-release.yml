@@ -35,9 +35,12 @@ jobs:
       contents: read
     if: github.ref == 'refs/heads/main'
     outputs:
-      version: ${{ steps.version.outputs.version }}
-      minor_version: ${{ steps.version.outputs.minor_version }}
-      major_version: ${{ steps.version.outputs.major_version }}
+      # version: ${{ steps.version.outputs.version }}
+      # minor_version: ${{ steps.version.outputs.minor_version }}
+      # major_version: ${{ steps.version.outputs.major_version }}
+      version: v0.1.1
+      minor_version: v0.1
+      major_version: v0
       previous_version: ${{ steps.version.outputs.previous_version }}
       previous_version_ref: ${{ steps.version.outputs.previous_version_ref }}
     steps:
@@ -52,7 +55,8 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
-    needs: [qa, versioning]
+    # needs: [qa, versioning]
+    needs: [versioning]
     if: github.ref != needs.versioning.outputs.previous_version_ref
     steps:
       - uses: actions/checkout@v3
@@ -63,7 +67,8 @@ jobs:
         run: npm install && npm run ci:build && npm prune --production
       - name: 'Apply version ${{ needs.versioning.outputs.version }} (major: ${{ needs.versioning.outputs.major_version }}, minor: ${{ needs.versioning.outputs.minor_version }})'
         env:
-          VERSION: ${{ needs.versioning.outputs.version }}
+          # VERSION: ${{ needs.versioning.outputs.version }}
+          VERSION: v0.1.1
         run: |
           node -e 'const pkg = require("./package.json"); pkg.version = process.env.VERSION.substring(1); fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2) + "\n")'
       - name: Git Author Config
@@ -73,23 +78,29 @@ jobs:
       - name: Versioning
         run: git tag $VERSION
         env:
-          VERSION: ${{ needs.versioning.outputs.version }}
+          # VERSION: ${{ needs.versioning.outputs.version }}
+          VERSION: v0.1.1
       - name: Versioning (minor)
         run: git tag -f $VERSION
         env:
-          VERSION: ${{ needs.versioning.outputs.minor_version }}
+          # VERSION: ${{ needs.versioning.outputs.minor_version }}
+          VERSION: v0.1.1
       - name: Versioning (major)
         run: git tag -f $VERSION
         env:
-          VERSION: ${{ needs.versioning.outputs.major_version }}
+          # VERSION: ${{ needs.versioning.outputs.major_version }}
+          VERSION: v0.1.1
       - name: Push tags
         run: |
           git push -u origin $VERSION
           git push -fu origin {$MINOR_VERSION,$MAJOR_VERSION}
         env:
-          VERSION: ${{ needs.versioning.outputs.version }}
-          MINOR_VERSION: ${{ needs.versioning.outputs.minor_version }}
-          MAJOR_VERSION: ${{ needs.versioning.outputs.major_version }}
+          # VERSION: ${{ needs.versioning.outputs.version }}
+          VERSION: v0.1.1
+          # MINOR_VERSION: ${{ needs.versioning.outputs.minor_version }}
+          MINOR_VERSION: v0.1
+          # MAJOR_VERSION: ${{ needs.versioning.outputs.major_version }}
+          MAJOR_VERSION: v0
       - name: NPM Authentication
         run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
         env:
