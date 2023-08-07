@@ -1,13 +1,3 @@
-export function getInput(name: string): string;
-export function getInput(
-	name: string,
-	options: { optional: true },
-): string | undefined;
-export function getInput(name: string, options: { optional: false }): string;
-export function getInput<Optional extends boolean>(
-	name: string,
-	options: { optional?: Optional },
-): Optional extends true ? string | undefined : string;
 export function getInput<Output>(
 	name: string,
 	options: { type: (value: string) => Output },
@@ -26,29 +16,48 @@ export function getInput<Output>(
 		type: (value: string) => Output;
 	},
 ): Output;
-export function getInput<Optional extends boolean, Output>(
+export function getInput<Output, Optional extends boolean>(
 	name: string,
 	options: {
 		optional?: Optional | undefined;
 		type: (value: string) => Output;
 	},
 ): Optional extends true ? undefined | Output : Output;
+export function getInput<Output, Optional extends boolean>(
+	name: string,
+	options: {
+		optional: Optional;
+		type: (value: string) => Output;
+		default: Output;
+	},
+): Optional extends true ? undefined | Output : Output;
 
 export function getInput(
 	name: string,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	options?: { optional?: boolean; type?: (value: string) => any },
+	options?: {
+		optional?: boolean;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		type?: (value: string) => any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		default?: any;
+	},
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any {
 	options ??= {};
 	options.type ??= string;
 	options.optional ??= false;
 	const value = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`];
-	if (value === undefined && options.optional !== true) {
+	if (
+		value === undefined &&
+		(options.optional !== true || options.default !== undefined)
+	) {
+		if (options.default !== undefined) {
+			return options.default;
+		}
 		throw new Error(`Missing required input '${name}'`);
 	}
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	if (value === undefined) return undefined as any;
+	if (value === undefined || value === null) return undefined as any;
 	try {
 		return options.type(value);
 	} catch (error) {
