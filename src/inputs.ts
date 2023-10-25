@@ -51,7 +51,6 @@ export function getInput(
 	const value =
 		process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || undefined;
 	debug("input %o = %o", name, value);
-	debug("options = %o", options);
 	if (
 		value === undefined &&
 		(options.optional !== true || options.defaultValue !== undefined)
