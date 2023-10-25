@@ -11,10 +11,10 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
       - run: npm install
       - run: npm run ci:fmt
   lint:
@@ -23,10 +23,10 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
       - run: npm install
       - run: npm run ci:lint
   test:
@@ -35,10 +35,10 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
       - run: npm install
       - run: npm run ci:test
   build:
@@ -47,10 +47,10 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
       - run: npm install
       - run: npm run ci:build
   codeql:
@@ -58,10 +58,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       # prepare
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
       # init
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
