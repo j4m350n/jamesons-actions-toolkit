@@ -1,6 +1,6 @@
 export function rawString(
 	template: TemplateStringsArray,
-	...args: any[]
+	...args: unknown[]
 ): string {
 	let str = template[0] || "";
 	for (let index = 0; index < args.length; index++) {
