@@ -1,3 +1,4 @@
+import { rawString } from "./util";
 import trimIndent from "./util/trimIndent";
 import { writeFileSync } from "fs";
 
@@ -28,7 +29,7 @@ export function jobSummary(
 	writeFileSync(
 		process.env[key],
 		trimIndent(
-			typeof content === "string" ? content : String.raw(content, ...args),
+			typeof content === "string" ? content : rawString(content, ...args),
 		),
 	);
 }

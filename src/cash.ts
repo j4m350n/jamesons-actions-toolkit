@@ -8,6 +8,7 @@ import {
 } from "node:child_process";
 import Callable from "./util/Callable";
 import { WritableStream, ReadableStream } from "node:stream/web";
+import { rawString } from "./util";
 
 export interface Commandline {
 	name: string;
@@ -360,7 +361,7 @@ export class Cash extends Callable<
 
 	public constructor(commandline: Commandline) {
 		super((template: TemplateStringsArray, ...args: unknown[]) =>
-			this.exec(String.raw(template, ...args)),
+			this.exec(rawString(template, ...args)),
 		);
 		this.setShell(commandline);
 	}
