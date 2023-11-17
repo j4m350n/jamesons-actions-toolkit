@@ -1,13 +1,13 @@
-import { mkdir } from "fs/promises";
 import randomPath from "./randomPath";
+import { mkdirSync } from "fs";
 
 /**
  * Create a temporary directory with a random path.
  * @returns The path to the directory.
  */
-export async function randomDir() {
+export function randomDir() {
 	const path = randomPath();
-	await mkdir(path, { recursive: true });
+	mkdirSync(path, { recursive: true });
 	return path;
 }
 

@@ -1,7 +1,12 @@
-import { appendFile, readFile, writeFile } from "node:fs/promises";
 import indexOf from "./util/indexOf";
 import { randomUUID } from "node:crypto";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import {
+	appendFileSync,
+	existsSync,
+	mkdirSync,
+	readFileSync,
+	writeFileSync,
+} from "node:fs";
 import { dirname } from "node:path";
 
 const EOK = /(=|<<)/g;
@@ -44,10 +49,8 @@ export function parseProperties(data: string): Record<string, string> {
 	return properties;
 }
 
-export async function parsePropertiesOfFile(
-	path: string,
-): Promise<Record<string, string>> {
-	return parseProperties((await readFile(path)).toString());
+export function parsePropertiesOfFile(path: string): Record<string, string> {
+	return parseProperties(readFileSync(path).toString());
 }
 
 function stringifyKeyValue(key: string, value: string) {
@@ -66,33 +69,31 @@ export function stringifyProperties(
 	return out;
 }
 
-export function getPropertiesFromEnvFile(
-	key: string,
-): Promise<Record<string, string>> {
+export function getPropertiesFromEnvFile(key: string): Record<string, string> {
 	if (!process.env[key]) {
 		throw new Error(`Missing environment variable '${key}'`);
 	}
 	return parsePropertiesOfFile(process.env[key] as string);
 }
 
-export async function savePropertiesToFile(
+export function savePropertiesToFile(
 	path: string,
 	properties: Record<string, string>,
 ) {
-	await writeFile(path, stringifyProperties(properties));
+	writeFileSync(path, stringifyProperties(properties));
 }
 
-export async function savePropertiesToEnvFile(
+export function savePropertiesToEnvFile(
 	key: string,
 	properties: Record<string, string>,
 ) {
 	if (!process.env[key]) {
 		throw new Error(`Missing environment variable '${key}'`);
 	}
-	await savePropertiesToFile(process.env[key] as string, properties);
+	savePropertiesToFile(process.env[key] as string, properties);
 }
 
-export async function appendPropertiesToFile(
+export function appendPropertiesToFile(
 	path: string,
 	properties: Record<string, string>,
 ) {
@@ -101,33 +102,33 @@ export async function appendPropertiesToFile(
 		writeFileSync(path, "");
 	}
 	const content = stringifyProperties(properties);
-	await appendFile(path, content);
+	appendFileSync(path, content);
 }
 
-export async function appendPropertiesToEnvFile(
+export function appendPropertiesToEnvFile(
 	key: string,
 	properties: Record<string, string>,
 ) {
 	if (!process.env[key]) {
 		throw new Error(`Missing environment variable '${key}'`);
 	}
-	await appendPropertiesToFile(process.env[key] as string, properties);
+	appendPropertiesToFile(process.env[key] as string, properties);
 }
 
-export function getGithubEnvironment(): Promise<Record<string, string>> {
+export function getGithubEnvironment(): Record<string, string> {
 	return getPropertiesFromEnvFile("GITHUB_ENV");
 }
 
 export function saveGithubEnvironment(
 	properties: Record<string, string>,
-): Promise<void> {
-	return savePropertiesToEnvFile("GITHUB_ENV", properties);
+): void {
+	savePropertiesToEnvFile("GITHUB_ENV", properties);
 }
 
 export function appendGithubEnvironment(
 	properties: Record<string, string>,
-): Promise<void> {
-	return appendPropertiesToEnvFile("GITHUB_ENV", properties);
+): void {
+	appendPropertiesToEnvFile("GITHUB_ENV", properties);
 }
 
 export function setEnvironmentVariable(key: string, value: string) {
@@ -135,22 +136,18 @@ export function setEnvironmentVariable(key: string, value: string) {
 	return appendGithubEnvironment({ [key]: value });
 }
 
-export function getGithubOutputs(): Promise<Record<string, string>> {
+export function getGithubOutputs(): Record<string, string> {
 	return getPropertiesFromEnvFile("GITHUB_OUTPUT");
 }
 
-export function saveGithubOutputs(
-	properties: Record<string, string>,
-): Promise<void> {
-	return savePropertiesToEnvFile("GITHUB_OUTPUT", properties);
+export function saveGithubOutputs(properties: Record<string, string>): void {
+	savePropertiesToEnvFile("GITHUB_OUTPUT", properties);
 }
 
-export function appendGithubOutputs(
-	properties: Record<string, string>,
-): Promise<void> {
-	return appendPropertiesToEnvFile("GITHUB_OUTPUT", properties);
+export function appendGithubOutputs(properties: Record<string, string>): void {
+	appendPropertiesToEnvFile("GITHUB_OUTPUT", properties);
 }
 
 export function setOutput(key: string, value: string) {
-	return appendGithubOutputs({ [key]: value });
+	appendGithubOutputs({ [key]: value });
 }

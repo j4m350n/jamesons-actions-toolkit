@@ -1,31 +1,31 @@
-import { writeFile } from "fs/promises";
 import trimIndent from "./util/trimIndent";
+import { writeFileSync } from "fs";
 
 /**
  * Set the markdown job/step summary.
  * @param content The markdown job summary content.
  */
-export async function jobSummary(content: string): Promise<void>;
+export function jobSummary(content: string): void;
 
 /**
  * Set the markdown job/step summary.
  * @param template The markdown job summary template  content.
  * @param args The arguments to fill into the template.
  */
-export async function jobSummary(
+export function jobSummary(
 	template: TemplateStringsArray,
 	...args: unknown[]
-): Promise<void>;
+): void;
 
-export async function jobSummary(
+export function jobSummary(
 	content: string | TemplateStringsArray,
 	...args: unknown[]
-): Promise<void> {
+): void {
 	const key = "GITHUB_STEP_SUMMARRY";
 	if (!process.env[key]) {
 		throw new Error(`Missing environment variable '${key}'`);
 	}
-	await writeFile(
+	writeFileSync(
 		process.env[key],
 		trimIndent(
 			typeof content === "string" ? content : String.raw(content, ...args),
