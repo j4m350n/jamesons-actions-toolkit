@@ -54,33 +54,3 @@ export function trimIndent(
 }
 
 export default trimIndent;
-
-process.stdout.write(
-	trimIndent`
-		❌ Error: Title is not up to standards.
-		
-		Title must be formatted as follows:
-		
-		\`\`\`
-		<type>: <summary>
-		<type>!: <summary>
-		<type>(<scope>): <summary>
-		<type>(<scope>)!: <summary>
-		\`\`\`
-	`,
-);
-
-process.stdout.write(
-	`
-		❌ Error: Title is not up to standards.
-		
-		Title must be formatted as follows:
-		
-		\`\`\`
-		<type>: <summary>
-		<type>!: <summary>
-		<type>(<scope>): <summary>
-		<type>(<scope>)!: <summary>
-		\`\`\`
-	`,
-);
