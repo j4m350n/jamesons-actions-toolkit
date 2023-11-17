@@ -19,9 +19,6 @@ export function trimIndent(
 	...args: unknown[]
 ): string {
 	let str = typeof content === "string" ? content : rawString(content, ...args);
-	console.log("Trimming indent on");
-	console.log(str);
-	console.log("Trimmed");
 	const firstLines = str.match(FIRST_LINES)?.groups?.firstLines || "";
 	const lastLines = str.match(LAST_LINES)?.groups?.lastLines || "";
 	str = trimEnd(
