@@ -21,7 +21,7 @@ export function jobSummary(
 	content: string | TemplateStringsArray,
 	...args: unknown[]
 ): void {
-	const key = "GITHUB_STEP_SUMMARRY";
+	const key = "GITHUB_STEP_SUMMARY";
 	if (!process.env[key]) {
 		throw new Error(`Missing environment variable '${key}'`);
 	}
