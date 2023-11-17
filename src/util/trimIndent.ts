@@ -7,7 +7,17 @@ function trimEnd(line: string) {
 	return line.replace(LAST_WHITESPACE, "");
 }
 
-export function trimIndent(str: string) {
+export function trimIndent(
+	template: TemplateStringsArray,
+	...args: unknown[]
+): string;
+export function trimIndent(content: string): string;
+export function trimIndent(
+	content: string | TemplateStringsArray,
+	...args: unknown[]
+): string {
+	let str =
+		typeof content === "string" ? content : String.raw(content, ...args);
 	const firstLines = str.match(FIRST_LINES)?.groups?.firstLines || "";
 	const lastLines = str.match(LAST_LINES)?.groups?.lastLines || "";
 	str = str.substring(firstLines.length, str.length - lastLines.length);
