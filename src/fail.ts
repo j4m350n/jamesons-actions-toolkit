@@ -19,7 +19,7 @@ export function fail(
 	...args: unknown[]
 ): never {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const result = "❌ Error:" + trimIndent(content as any, ...(args || []));
+	const result = "❌ Error: " + trimIndent(content as any, ...(args || []));
 	jobSummary(result);
 	console.error(result);
 	process.exit(1);
